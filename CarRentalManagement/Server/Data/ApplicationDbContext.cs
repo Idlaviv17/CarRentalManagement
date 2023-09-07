@@ -1,4 +1,5 @@
-﻿using CarRentalManagement.Server.Models;
+﻿using CarRentalManagement.Server.Configurations.Entities;
+using CarRentalManagement.Server.Models;
 using CarRentalManagement.Shared.Domain;
 using IdentityServer4.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
@@ -29,7 +30,12 @@ namespace CarRentalManagement.Server.Data
         {
             base.OnModelCreating(builder);
 
-            builder.ApplyConfiguration(new CoulourSeedConfiguration());
+            builder.ApplyConfiguration(new ColourSeedConfiguration());
+            builder.ApplyConfiguration(new MakeSeedConfiguration());
+            builder.ApplyConfiguration(new ModelSeedConfiguration());
+            builder.ApplyConfiguration(new RoleSeedConfiguration());
+            builder.ApplyConfiguration(new UserSeedConfiguration());
+            builder.ApplyConfiguration(new UserRoleSeedConfiguration());
         }
     }
 }
