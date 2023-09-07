@@ -9,7 +9,7 @@ using System;
 
 namespace CarRentalManagement.Server.Data.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(IUnitOfWork))]
     [Migration("00000000000000_CreateIdentitySchema")]
     partial class CreateIdentitySchema
     {

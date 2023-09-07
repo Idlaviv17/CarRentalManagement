@@ -12,9 +12,9 @@ using System.Threading.Tasks;
 
 namespace CarRentalManagement.Server.Data
 {
-    public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
+    public class IUnitOfWork : ApiAuthorizationDbContext<ApplicationUser>
     {
-        public ApplicationDbContext(
+        public IUnitOfWork(
             DbContextOptions options,
             IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
         {
