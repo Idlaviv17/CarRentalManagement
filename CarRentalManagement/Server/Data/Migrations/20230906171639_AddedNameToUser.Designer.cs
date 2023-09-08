@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CarRentalManagement.Server.Data.Migrations
 {
-    [DbContext(typeof(IUnitOfWork))]
+    [DbContext(typeof(ApplicationDbContext))]
     [Migration("20230906171639_AddedNameToUser")]
     partial class AddedNameToUser
     {

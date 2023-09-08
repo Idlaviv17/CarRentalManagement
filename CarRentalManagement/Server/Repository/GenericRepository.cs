@@ -1,18 +1,20 @@
 ﻿using CarRentalManagement.Server.Data;
 using CarRentalManagement.Server.IRepository;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace CarRentalManagement.Server.Repository
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
-        private readonly Data.IUnitOfWork _context;
+        private readonly ApplicationDbContext _context;
         private readonly DbSet<T> _db;
 
-        public GenericRepository(Data.IUnitOfWork context)
+        public GenericRepository(ApplicationDbContext context)
         {
             _context = context;
             _db = _context.Set<T>();
@@ -44,7 +46,9 @@ namespace CarRentalManagement.Server.Repository
             return await query.AsNoTracking().FirstOrDefaultAsync(expression);
         }
 
-        public async Task<IList<T>> GetAll(System.Linq.Expressions.Expression<System.Func<T, bool>> expression = null, System.Func<System.Linq.IQueryable<T>, System.Linq.IOrderedQueryable<T>> orderBy = null, List<string> includes = null)
+        public async Task<IList<T>> GetAll(Expression<Func<T, bool>> expression = null,
+            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+            List<string> includes = null)
         {
             IQueryable<T> query = _db;
 
@@ -53,10 +57,10 @@ namespace CarRentalManagement.Server.Repository
                 query = query.Where(expression);
             }
 
-            if(includes != null) 
-            { 
-                foreach(var prop in includes) 
-                { 
+            if (includes != null)
+            {
+                foreach (var prop in includes)
+                {
                     query = query.Include(prop);
                 }
             }
