@@ -8,7 +8,7 @@
 <hr />
 <br />
 
-//Form here
+<FormComponent ButtonText="Create Booking" OnValidSubmit="@CreateBooking" booking="booking" />
 
 @code {
     Booking booking = new Booking
@@ -22,5 +22,4 @@
         await _client.PostAsJsonAsync(Endpoints.BookingsEndpoint, booking);
         _navManager.NavigateTo("/bookings/");
     }
-
 }

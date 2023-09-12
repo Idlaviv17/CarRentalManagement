@@ -33,8 +33,8 @@ namespace CarRentalManagement.Server.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetVehicle(int id)
         {
-			var includes = new List<string> { "Make", "Model", "Coulour", "Bookings" };
-			var Vehicle = await _unitOfWork.Vehicles.Get(q => q.Id == id, includes);
+            var includes = new List<string> { "Make", "Model", "Colour" };
+            var Vehicle = await _unitOfWork.Vehicles.Get(q => q.Id == id, includes);
 
             if (Vehicle == null)
             {
