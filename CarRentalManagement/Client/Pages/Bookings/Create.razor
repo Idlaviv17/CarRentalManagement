@@ -1,6 +1,6 @@
 ﻿@page "/bookings/create/"
 
-@inject HttpClient _client
+@inject IHttpRepository<Booking> _client
 @inject NavigationManager _navManager
 
 <h3 class="card-title">Create New Booking</h3>
@@ -19,7 +19,7 @@
 
     private async Task CreateBooking()
     {
-        await _client.PostAsJsonAsync(Endpoints.BookingsEndpoint, booking);
+        await _client.Create(Endpoints.BookingsEndpoint, booking);
         _navManager.NavigateTo("/bookings/");
     }
 }

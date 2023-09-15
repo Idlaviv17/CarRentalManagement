@@ -1,6 +1,6 @@
 ﻿@page "/vehicles/edit/{id:int}"
 
-@inject HttpClient _client
+@inject IHttpRepository<Vehicle> _client
 @inject NavigationManager _navManager
 
 <h3>Edit</h3>
@@ -13,12 +13,12 @@
 
     protected async override Task OnParametersSetAsync()
     {
-        vehicle = await _client.GetFromJsonAsync<Vehicle>($"{Endpoints.VehiclesEndpoint}/{id}");
+        vehicle = await _client.Get(Endpoints.VehiclesEndpoint, id);
     }
 
     async Task EditVehicle()
     {
-        await _client.PutAsJsonAsync($"{Endpoints.VehiclesEndpoint}/{id}", vehicle);
+        await _client.Update(Endpoints.VehiclesEndpoint, vehicle, id);
         _navManager.NavigateTo("/vehicles/");
     }
 }

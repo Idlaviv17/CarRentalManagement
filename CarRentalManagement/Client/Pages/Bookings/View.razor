@@ -1,6 +1,6 @@
 ﻿@page "/bookings/view/{id:int}"
 
-@inject HttpClient _client
+@inject IHttpRepository<Booking> _client
 @inject NavigationManager _navManager
 
 <h3>View</h3>
@@ -13,6 +13,6 @@
 
 	protected async override Task OnParametersSetAsync()
 	{
-		booking = await _client.GetFromJsonAsync<Booking>($"{Endpoints.BookingsEndpoint}/{id}");
+		booking = await _client.Get(Endpoints.BookingsEndpoint, id);
 	}
 }

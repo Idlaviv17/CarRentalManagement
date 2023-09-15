@@ -1,4 +1,5 @@
-﻿@inject HttpClient _client
+﻿@inject IHttpRepository<Vehicle> _clientVehicle 
+@inject IHttpRepository<Customer> _clientCustomer
 
 <EditForm Model="@booking" OnValidSubmit="OnValidSubmit">
 	<DataAnnotationsValidator />
@@ -79,7 +80,7 @@
 
     protected async override Task OnInitializedAsync()
     {
-        Customers = await _client.GetFromJsonAsync<List<Customer>>(Endpoints.CustomersEndpoint);
-        Vehicles = await _client.GetFromJsonAsync<List<Vehicle>>($"{Endpoints.VehiclesEndpoint}");
+		Customers = await _clientCustomer.GetAll(Endpoints.CustomersEndpoint);
+		Vehicles = await _clientVehicle.GetAll(Endpoints.VehiclesEndpoint);
     }
 }

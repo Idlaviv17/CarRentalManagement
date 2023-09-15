@@ -1,6 +1,6 @@
 ﻿@page "/makes/create/"
 
-@inject HttpClient _client
+@inject IHttpRepository<Make> _client
 @inject NavigationManager _navManager
 
 <h3 class="card-title">Create New Make</h3>
@@ -11,16 +11,10 @@
 
 @code {
     Make make = new Make();
-    
-
-    protected async override Task OnInitializedAsync()
-    {
-        
-    }
 
     private async Task CreateMake()
     {
-        await _client.PostAsJsonAsync(Endpoints.MakesEndpoint, make);
+        await _client.Create(Endpoints.MakesEndpoint, make);
         _navManager.NavigateTo("/makes/");
     }
 

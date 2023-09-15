@@ -1,6 +1,6 @@
 ﻿@page "/makes/edit/{id:int}"
 
-@inject HttpClient _client
+@inject IHttpRepository<Make> _client
 @inject NavigationManager _navManager
 
 <h3>Edit</h3>
@@ -13,12 +13,12 @@
 
 	protected async override Task OnParametersSetAsync()
 	{
-		make = await _client.GetFromJsonAsync<Make>($"{Endpoints.MakesEndpoint}/{id}");
+		make = await _client.Get(Endpoints.MakesEndpoint, id);
 	}
 
 	async Task EditMake()
 	{
-		await _client.PutAsJsonAsync($"{Endpoints.MakesEndpoint}/{id}", make);
+		await _client.Update(Endpoints.MakesEndpoint, make, id);
 		_navManager.NavigateTo("/makes/");
 	}
 }

@@ -1,5 +1,5 @@
 ﻿@page "/customers/"
-@inject HttpClient _client
+@inject IHttpRepository<Customer> _client
 @inject IJSRuntime js
 @attribute [Authorize]
 
@@ -57,7 +57,7 @@ else
 
 	protected override async Task OnInitializedAsync()
 	{
-		Customers = await _client.GetFromJsonAsync<List<Customer>>($"{Endpoints.CustomersEndpoint}");
+		Customers = await _client.GetAll(Endpoints.CustomersEndpoint);
 	}
 
 	private async Task Delete(int customerId)
@@ -66,7 +66,7 @@ else
 		var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete {customer.TaxId}?");
 		if (confirm)
 		{
-			await _client.DeleteAsync($"{Endpoints.CustomersEndpoint}/{customerId}");
+			await _client.Delete(Endpoints.CustomersEndpoint, customerId);
 			await OnInitializedAsync();
 		}
 	}

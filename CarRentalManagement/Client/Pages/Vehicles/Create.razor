@@ -1,6 +1,6 @@
 ﻿@page "/vehicles/create/"
 
-@inject HttpClient _client
+@inject IHttpRepository<Vehicle> _client
 @inject NavigationManager _navManager
 
 <h3 class="card-title">Create New Vehicle</h3>
@@ -14,8 +14,7 @@
 
     private async Task CreateVehicle()
     {
-        await _client.PostAsJsonAsync(Endpoints.VehiclesEndpoint, vehicle);
+        await _client.Create(Endpoints.VehiclesEndpoint, vehicle);
         _navManager.NavigateTo("/vehicles/");
     }
-
 }

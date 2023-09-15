@@ -2,6 +2,7 @@
 using System;
 using System.Data;
 using System.Net;
+using System.Net.Http;
 using Toolbelt.Blazor;
 
 namespace CarRentalManagement.Client.Services
@@ -42,7 +43,7 @@ namespace CarRentalManagement.Client.Services
 						message = "Something went wrong, please contact Administrator.";
 						break;
 				}
-				throw new Exception(message);	
+				throw new HttpRequestException(message);
 			} 
 		}
 

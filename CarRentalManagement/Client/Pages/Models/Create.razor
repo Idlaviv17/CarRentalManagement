@@ -1,6 +1,6 @@
 ﻿@page "/models/create/"
 
-@inject HttpClient _client
+@inject IHttpRepository<Model> _client
 @inject NavigationManager _navManager
 
 <h3 class="card-title">Create New Model</h3>
@@ -18,7 +18,7 @@
 
     private async Task CreateModel()
     {
-        await _client.PostAsJsonAsync(Endpoints.ModelsEndpoint, model);
+        await _client.Create(Endpoints.ModelsEndpoint, model);
         _navManager.NavigateTo("/models/");
     }
 

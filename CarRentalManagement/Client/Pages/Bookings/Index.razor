@@ -1,6 +1,7 @@
 ﻿@page "/bookings/"
-@inject HttpClient _client
+@inject IHttpRepository<Booking> _client
 @inject IJSRuntime js
+@implements IDisposable
 @attribute [Authorize]
 
 <HeadingComponent Text="Bookings" />
@@ -19,7 +20,7 @@
 }
 else
 {
-	<table class="table">
+	<table class="table" id="bookingsTable">
 		<thead>
 			<tr>
 				<th>Customer Tax Id</th>
@@ -35,7 +36,7 @@ else
 					<td>@booking.Customer.TaxId</td>
 					<td>@booking.DateCreated.Date.ToString("dd MMMM yyyy")</td>
 					<td>
-						@(booking.DateIn != null ? (booking.DateIn.Value - booking.DateOut).TotalDays.ToString()
+						@(booking.DateIn != null ? Math.Round((booking.DateIn.Value - booking.DateOut).TotalDays).ToString()
 							: "To Be Determined")
 					</td>
 					<td>
@@ -58,9 +59,19 @@ else
 @code {
 	private List<Booking> Bookings;
 
-	protected override async Task OnInitializedAsync()
+	protected async override Task OnInitializedAsync()
 	{
-		Bookings = await _client.GetFromJsonAsync<List<Booking>>($"{Endpoints.BookingsEndpoint}");
+		Bookings = await _client.GetAll($"{Endpoints.BookingsEndpoint}");
+	}
+
+	protected async override Task OnAfterRenderAsync(bool firstRender)
+	{
+		await js.InvokeVoidAsync("AddDataTable", "#bookingsTable");
+	}
+
+	public void Dispose()
+	{
+		js.InvokeVoidAsync("DataTablesDispose", "#bookingsTable");
 	}
 
 	private async Task Delete(int bookingId)
@@ -69,7 +80,7 @@ else
 		var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete {booking.Customer.TaxId}?");
 		if (confirm)
 		{
-			await _client.DeleteAsync($"{Endpoints.BookingsEndpoint}/{bookingId}");
+			await _client.Delete(Endpoints.BookingsEndpoint, bookingId);
 			await OnInitializedAsync();
 		}
 	}
